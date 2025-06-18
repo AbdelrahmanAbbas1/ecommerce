@@ -1,0 +1,26 @@
+.description-hover {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  position: relative;
+  max-width: 100%;
+}
+
+/* Tooltip-like behavior */
+.description-hover:hover::after {
+  content: attr(data-fulltext);
+  position: absolute;
+  background: #fff;
+  color: #000;
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  white-space: normal;
+  width: max-content;
+  max-width: 300px;
+  z-index: 10;
+  top: 100%;
+  left: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
