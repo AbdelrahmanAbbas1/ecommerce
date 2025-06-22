@@ -9,9 +9,10 @@ require_once('./helper_functions.php');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $name = $_POST['name'];
-  $description = $_POST['description'];
-  $price = $_POST['price'];
+  $input = json_decode(file_get_contents('php://input'), true);
+  $name = $input['name'] ?? '';
+  $price = $input['price'] ?? '';
+  $description = $input['description'] ?? '';
 
   // Validate the product
   if (!validateProduct($name, $price)) {

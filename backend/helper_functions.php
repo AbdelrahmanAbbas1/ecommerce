@@ -9,7 +9,7 @@ function format_price(float $price): string
 }
 
 // To validat the name and price
-function validateProduct(string $name, float $price): bool
+function validateProduct(string $name, mixed $price): bool
 {
   return !empty($name) && is_numeric($price) && $price > 0;
 }
