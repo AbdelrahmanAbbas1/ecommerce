@@ -17,6 +17,11 @@ try {
     exit;
   }
 
+  //Filter cheap products
+  if (isset($_GET['cheap_only'])) {
+    $products = filterCheapProducts($products);
+  }
+
   // Used a reference here to update the original array
   foreach ($products as &$product) {
     $price = (float) $product['price'];
