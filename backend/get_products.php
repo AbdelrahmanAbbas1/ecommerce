@@ -6,8 +6,15 @@ require_once('./config.php');
 require_once('./helper_functions.php');
 
 try {
-  $maxPrice = isset($_GET['maxPrice']) ? (float) $_GET['maxPrice'] : 99999.99;
-  $stmt = $pdo->prepare('SELECT * FROM products WHERE price <= ?');
+
+  $maxPrice = isset($_GET['xmaxPrice']) ? (float) $_GET['maxPrice'] : 99999.99;
+
+  $query = "SELECT p.*, c.name AS category_name
+            FROM products AS p
+            LEFT JOIN categories as c ON p.category_id = c.id
+            WHERE p.price <= ?
+            ";
+  $stmt = $pdo->prepare($query);
   $stmt->execute([$maxPrice]);
   $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
