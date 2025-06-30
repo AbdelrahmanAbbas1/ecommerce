@@ -5,6 +5,8 @@ function AddProduct() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [categoryError, setCategoryError] = useState("");
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -15,12 +17,14 @@ function AddProduct() {
           name,
           price,
           description,
+          category_id: categoryId,
         }
       );
       if (response.data && response.data.success) {
         setName("");
         setPrice("");
         setDescription("");
+        setCategoryId("");
         alert("A new product is added");
       } else {
         console.log(response, response.data.success, response.data);
@@ -60,8 +64,11 @@ function AddProduct() {
                 aria-label="close"
               ></button>
             </div>
+
+            {/* Start Form */}
             <form method="POST" onSubmit={handleOnSubmit}>
               <div className="modal-body">
+                {/* Setting the product name */}
                 <label htmlFor="productName" className="col-form-label">
                   Name:
                 </label>
@@ -74,6 +81,8 @@ function AddProduct() {
                   onChange={(e) => setName(e.target.value)}
                   required
                 />
+
+                {/* Setting the product price */}
                 <label htmlFor="productPrice" className="col-form-label">
                   Price:
                 </label>
@@ -86,6 +95,8 @@ function AddProduct() {
                   onChange={(e) => setPrice(e.target.value)}
                   required
                 />
+
+                {/* Setting the product description */}
                 <label htmlFor="productDescription" className="col-form-label">
                   Description:
                 </label>
@@ -99,6 +110,34 @@ function AddProduct() {
                   onChange={(e) => setDescription(e.target.value)}
                   required
                 ></textarea>
+
+                {/* Setting the product category_id */}
+                <label htmlFor="productCategoryId" className="col-form-label">
+                  Category Id:
+                </label>
+                <input
+                  type="number"
+                  name="categoryId"
+                  id="productCategoryId"
+                  className="form-control"
+                  value={categoryId}
+                  onChange={(e) => {
+                    const value = Number(e.target.value);
+                    if (value <= 0 || value > 3) {
+                      setCategoryError("You have to Enter a valid id (1-3)");
+                      setCategoryId("");
+                    } else {
+                      setCategoryError("");
+                      setCategoryId(value);
+                    }
+                  }}
+                  required
+                />
+                {categoryError && (
+                  <div className="text-danger" style={{ fontSize: "0.9em" }}>
+                    {categoryError}
+                  </div>
+                )}
               </div>
               <div className="modal-footer">
                 <button
@@ -108,10 +147,16 @@ function AddProduct() {
                 >
                   Close
                 </button>
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={!categoryId || categoryError}
+                >
                   Add Product
                 </button>
               </div>
+
+              {/* End Form */}
             </form>
           </div>
         </div>

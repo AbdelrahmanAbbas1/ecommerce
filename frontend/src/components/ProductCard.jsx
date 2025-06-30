@@ -8,6 +8,7 @@ function ProductCard({ product }) {
         <div className="card h-100 text-center">
           <img src={placeholder} alt={product.name} className="card-img-top" />
           <div className="card-body">
+            <p className="badge bg-secondary">{product.cat_title}</p>
             <h5 className="card-title">{product.name}</h5>
             <p
               className="card-text text-turnicate"
