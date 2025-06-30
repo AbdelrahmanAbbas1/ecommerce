@@ -7,15 +7,26 @@ require_once('./helper_functions.php');
 
 try {
 
-  $maxPrice = isset($_GET['xmaxPrice']) ? (float) $_GET['maxPrice'] : 99999.99;
+  $maxPrice = isset($_GET['maxPrice']) ? (float) $_GET['maxPrice'] : 99999.99;
+  $categoryId = isset($_GET['categoryId']) ? (int) $_GET['categoryId'] : null;
 
-  $query = "SELECT p.*, c.name AS category_name
-            FROM products AS p
-            LEFT JOIN categories as c ON p.category_id = c.id
-            WHERE p.price <= ?
-            ";
+  $params = [$maxPrice];
+
+  if ($categoryId) {
+    $query = "SELECT p.*, c.title AS cat_title, c.id AS cat_id FROM products p 
+              LEFT JOIN categories c ON p.category_id = c.id
+              WHERE p.price < ?
+              AND p.category_id = ?";
+
+    $params[] = $categoryId;
+  } else {
+    $query = "SELECT p.*, c.title AS cat_title, c.id AS cat_id FROM products p 
+              LEFT JOIN categories c ON p.category_id = c.id
+              WHERE p.price < ?";
+  }
+
   $stmt = $pdo->prepare($query);
-  $stmt->execute([$maxPrice]);
+  $stmt->execute($params);
   $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   if (empty($products)) {
